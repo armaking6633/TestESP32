@@ -1,0 +1,17 @@
+name: Notify LINE
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  notify-line:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send LINE Notification
+        env:
+          LINE_TOKEN: ${{ secrets.LINE_NOTIFY_TOKEN }}
+        run: |
+          curl -X POST https://notify-api.line.me/api/notify \
+            -H "Authorization: Bearer $LINE_TOKEN" \
+            -F "message=New issue created: ${{ github.event.issue.title }} - ${{ github.event.issue.body }}"
